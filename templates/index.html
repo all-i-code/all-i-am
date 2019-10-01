@@ -27,6 +27,7 @@
 			<dl>
 				<dt>Name</dt><dd>{{ user_data['name'] }}</dd>
 				<dt>Email</dt><dd>{{ user_data['email'] }}</dd>
+				<dt>Profile pic</dt><dd><img src="{{ user_data['picture'] }}"></dd>
 				<dt>Last 10 visits</dt><dd>
 					{% for time in times %}
 						<p>{{ time['timestamp'] }}</p>
