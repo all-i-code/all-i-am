@@ -2,17 +2,55 @@
 <html>
 <head>
   <title>Datastore and Firebase Auth Example</title>
+
+	<!-- The core Firebase JS SDK is always required and must be listed first -->
+	<script src="https://www.gstatic.com/firebasejs/7.0.0/firebase-app.js"></script>
+
+	<!-- TODO: Add SDKs for Firebase products that you want to use
+			 https://firebase.google.com/docs/web/setup#available-libraries -->
+	<script src="https://www.gstatic.com/firebasejs/7.0.0/firebase-auth.js"></script>
+  <script src="https://cdn.firebase.com/libs/firebaseui/2.6.2/firebaseui.js"></script>
+  <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/2.6.2/firebaseui.css">
+
   <script src="{{ url_for('static', filename='script.js') }}"></script>
   <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
+
 <body>
+	<div id="firebaseui-auth-container"></div>
 
-  <h1>Datastore and Firebase Auth Example</h1>
+	<button id="sign-out" hidden=true>Sign Out</button>
 
-  <h2>Last 10 visits</h2>
-  {% for time in times %}
-    <p>{{ time['timestamp'] }}</p>
-  {% endfor %}
+	<div id="login-info" hidden=true>
+		<h2>Login info:</h2>
+		{% if user_data %}
+			<dl>
+				<dt>Name</dt><dd>{{ user_data['name'] }}</dd>
+				<dt>Email</dt><dd>{{ user_data['email'] }}</dd>
+				<dt>Last 10 visits</dt><dd>
+					{% for time in times %}
+						<p>{{ time['timestamp'] }}</p>
+					{% endfor %} </dd>
+			</dl>
+		{% elif error_message %}
+			<p>Error: {{ error_message }}</p>
+		{% endif %}
+	</div>
+
+	<script>
+		// Your web app's Firebase configuration
+		var firebaseConfig = {
+			apiKey: "AIzaSyDiZVyvU4bi2Y89DCr-IbxG0SRizJnTmz0",
+			authDomain: "all-i-am.firebaseapp.com",
+			databaseURL: "https://all-i-am.firebaseio.com",
+			projectId: "all-i-am",
+			storageBucket: "all-i-am.appspot.com",
+			messagingSenderId: "187840016125",
+			appId: "1:187840016125:web:48b3fef881c1c0aeec5894"
+		};
+		// Initialize Firebase
+		firebase.initializeApp(firebaseConfig);
+	</script>
 
 </body>
 </html>
