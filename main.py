@@ -9,16 +9,17 @@ app = Flask(__name__)
 datastore_client = datastore.Client()
 firebase_request_adapter = requests.Request()
 
-def store_time(dt):
-    entity = datastore.Entity(key=datastore_client.key('visit'))
+def store_time(email, dt):
+    entity = datastore.Entity(key=datastore_client.key('User', email, 'visit'))
     entity.update({
         'timestamp': dt
     })
 
     datastore_client.put(entity)
 
-def fetch_times(limit):
-    query = datastore_client.query(kind='visit')
+def fetch_times(email, limit):
+    ancestor = datastore_client.key('User', email)
+    query = datastore_client.query(kind='visit', ancestor=ancestor)
     query.order = ['-timestamp']
 
     times = query.fetch(limit=limit)
@@ -50,8 +51,8 @@ def root():
         # Record and fetch the recent times a logged-in user has accessed
         # the site. This is currently shared amongst all users, but will be
         # individualized in a following step.
-        store_time(datetime.datetime.now())
-        times = fetch_times(10)
+        store_time(claims['email'], datetime.datetime.now())
+        times = fetch_times(claims['email'], 10)
 
     return render_template(
         'index.html',
